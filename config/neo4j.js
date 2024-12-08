@@ -6,6 +6,20 @@ const driver = neo4j.driver(
     neo4j.auth.basic(process.env.NEO4J_USER || 'neo4j', process.env.NEO4J_PASSWORD || 'password')
 );
 
-const session = driver.session();
 
-module.exports = { driver, session };
+const runQuery = async (query, params = {}) => {
+    const session = driver.session();
+    try {
+        const result = await session.writeTransaction(async (tx) => {
+            return await tx.run(query, params);
+        });
+        return result;
+    } catch (error) {
+        console.error('Error in query execution:', error);
+        throw error;
+    } finally {
+        session.close();
+    }
+};
+
+module.exports = { driver, runQuery };

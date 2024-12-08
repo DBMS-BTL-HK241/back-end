@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { session } = require('../config/neo4j');
+const { runQuery } = require('../config/neo4j');
 const User = require('../models/userModel');
 
 const register = async (req, res) => {
