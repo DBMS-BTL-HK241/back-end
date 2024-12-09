@@ -106,10 +106,34 @@ const deleteAppointment = async (id) => {
     return result.records.length > 0 ? { message: 'Appointment deleted successfully' } : null;
 };
 
+// statistics
+const statisticsMonthlyAppointments = async (id) => {
+    const query = `
+        MATCH (a:Appointment)
+        WITH a, date(datetime(a.AppointmentDate)) AS appointmentDate
+        RETURN 
+            appointmentDate.year AS year,
+            appointmentDate.month AS month,
+            SUM(CASE WHEN a.Status = "Completed" THEN 1 ELSE 0 END) AS totalCompleted,
+            SUM(CASE WHEN a.Status = "Cancelled" THEN 1 ELSE 0 END) AS totalCancelled
+        ORDER BY year, month
+  `;
+
+    const result = await runQuery(query);
+
+    return result.records.map((record) => ({
+        year: record.get('year').toNumber(),
+        month: record.get('month').toNumber(),
+        totalCompleted: record.get('totalCompleted').toNumber(),
+        totalCancelled: record.get('totalCancelled').toNumber(),
+    }));
+};
+
 module.exports = {
     getAllAppointments,
     getAppointmentById,
     createAppointment,
     updateAppointment,
     deleteAppointment,
+    statisticsMonthlyAppointments,
 };
