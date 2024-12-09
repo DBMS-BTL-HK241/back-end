@@ -129,6 +129,33 @@ const statisticsMonthlyAppointments = async (id) => {
     }));
 };
 
+const checkUpcomingAppointments = async () => {
+    const query = `
+        MATCH (p:Patient)-[:BOOKED]->(a:Appointment)<-[:ASSIGNED]-(d:Doctor),
+            (c:Clinic)-[:HOSTED]->(a)
+        WHERE a.Status <> 'Cancelled' AND date(datetime(a.AppointmentDate)) = date(datetime()) + duration({days: 1})
+        RETURN a.AppointmentID AS AppointmentID,
+            p.Name AS PatientName,
+            d.Name AS DoctorName,
+            c.Name AS ClinicName,
+            a.AppointmentDate AS AppointmentDate,
+            a.Status AS Status
+    `;
+
+    const result = await runQuery(query);
+
+    return result.records.map((record) => {
+        return {
+            AppointmentID: record.get('AppointmentID'),
+            PatientName: record.get('PatientName'),
+            DoctorName: record.get('DoctorName'),
+            ClinicName: record.get('ClinicName'),
+            AppointmentDate: record.get('AppointmentDate'),
+            Status: record.get('Status'),
+        };
+    });
+};
+
 module.exports = {
     getAllAppointments,
     getAppointmentById,
@@ -136,4 +163,5 @@ module.exports = {
     updateAppointment,
     deleteAppointment,
     statisticsMonthlyAppointments,
+    checkUpcomingAppointments,
 };
