@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
 const sendAppointmentNotifications = require('./job/sendNotification');
+const createPatients = require('./migrations/Patients');
+const createDoctors = require('./migrations/Doctors');
+const createClinics = require('./migrations/Clinics');
 
-// Kiểm tra các tham số dòng lệnh
 const [, , command] = process.argv;
 
 if (command === 'sendNotification') {
@@ -11,6 +13,30 @@ if (command === 'sendNotification') {
     }).catch((err) => {
         console.error('Error sending notifications:', err);
     });
+} else if (command === 'createPatients') {
+    createPatients()
+        .then(() => {
+            console.log('Patients created successfully.');
+        })
+        .catch((err) => {
+            console.error('Error creating patients:', err);
+        });
+} else if (command === 'createDoctors') {
+    createDoctors()
+        .then(() => {
+            console.log('Doctors created successfully.');
+        })
+        .catch((err) => {
+            console.error('Error creating doctors:', err);
+        });
+} else if (command === 'createClinics') {
+    createClinics()
+        .then(() => {
+            console.log('Clinics created successfully.');
+        })
+        .catch((err) => {
+            console.error('Error creating Clinics:', err);
+        });
 } else {
-    console.log('Unknown command. Use "sendNotification" to send appointment notifications.');
+    console.log('Unknown command');
 }

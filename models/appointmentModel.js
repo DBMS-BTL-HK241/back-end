@@ -139,7 +139,9 @@ const checkUpcomingAppointments = async () => {
             d.Name AS DoctorName,
             c.Name AS ClinicName,
             a.AppointmentDate AS AppointmentDate,
-            a.Status AS Status
+            a.Status AS Status,
+            p.EMAIL AS EMAIL
+
     `;
 
     const result = await runQuery(query);
@@ -152,6 +154,7 @@ const checkUpcomingAppointments = async () => {
             ClinicName: record.get('ClinicName'),
             AppointmentDate: record.get('AppointmentDate'),
             Status: record.get('Status'),
+            EMAIL: record.get('EMAIL'),
         };
     });
 };
