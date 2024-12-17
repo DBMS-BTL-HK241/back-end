@@ -73,24 +73,7 @@ const statisticsMonthlyAppointments = async (req, res) => {
 
 const calendarAppointments = async (req, res) => {
     try {
-        const appointments = [
-            {
-                "AppointmentID": 1,
-                "PatientID": 123,
-                "DoctorID": 456,
-                "ClinicID": 789,
-                "AppointmentDate": "2024-12-10T10:00:00",
-                "Status": "Scheduled"
-            },
-            {
-                "AppointmentID": 2,
-                "PatientID": 124,
-                "DoctorID": 457,
-                "ClinicID": 790,
-                "AppointmentDate": "2024-12-11T14:00:00",
-                "Status": "Scheduled"
-            }
-        ];
+        const appointments = await appointmentModel.getAllAppointments();
         res.json(appointments);
     } catch (error) {
         console.error('Error fetching appointments:', error);

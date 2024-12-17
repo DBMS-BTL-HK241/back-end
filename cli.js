@@ -4,6 +4,7 @@ const sendAppointmentNotifications = require('./job/sendNotification');
 const createPatients = require('./migrations/Patients');
 const createDoctors = require('./migrations/Doctors');
 const createClinics = require('./migrations/Clinics');
+const createAppointment = require('./migrations/Appointments');
 
 const [, , command] = process.argv;
 
@@ -37,6 +38,17 @@ if (command === 'sendNotification') {
         .catch((err) => {
             console.error('Error creating Clinics:', err);
         });
-} else {
+} else if (command === 'createAppointment') {
+    createAppointment()
+        .then(() => {
+            console.log('Appointment created successfully.');
+        })
+        .catch((err) => {
+            console.error('Error creating Appointment:', err);
+        });
+}
+
+
+else {
     console.log('Unknown command');
 }

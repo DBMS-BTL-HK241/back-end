@@ -15,6 +15,7 @@ const getAllAppointments = async () => {
            c.ClinicID AS ClinicID,
            a.AppointmentDate AS AppointmentDate,
            a.Status AS Status
+           ORDER BY a.AppointmentDate DESC 
 `;
     const result = await runQuery(query);
 
@@ -88,7 +89,7 @@ const updateAppointment = async (id, data) => {
         SET a += $data
         RETURN a
     `;
-    const result = await runQuery(query, { id: parseInt(id), data: data });
+    const result = await runQuery(query, { id: (id), data: data });
     if (result.records.length > 0) {
         return result.records[0].get('a').properties;
     }
