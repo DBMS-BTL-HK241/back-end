@@ -1,7 +1,7 @@
-const { session } = require('../config/neo4j');
+const { runQuery } = require('../config/neo4j');
 
 const createUser = async (username, password, role) => {
-    const result = await session.run(
+    const result = await runQuery(
         'CREATE (u:User {username: $username, password: $password, role: $role}) RETURN u',
         { username, password, role }
     );
@@ -9,7 +9,7 @@ const createUser = async (username, password, role) => {
 };
 
 const findUserByUsername = async (username) => {
-    const result = await session.run(
+    const result = await runQuery(
         'MATCH (u:User {username: $username}) RETURN u',
         { username }
     );

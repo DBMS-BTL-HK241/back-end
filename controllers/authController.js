@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { session } = require('../config/neo4j');
+const { runQuery } = require('../config/neo4j');
 const User = require('../models/userModel');
 
 const register = async (req, res) => {
@@ -17,7 +17,7 @@ const login = async (req, res) => {
     if (user && bcrypt.compareSync(password, user.password)) {
         const token = jwt.sign({ username: user.username, id: user.id, role: user.role }, 'secret_key', { expiresIn: '1h' });
         req.session.token = token;
-        res.json({ message: 'Logged in', token });
+        res.json({ message: 'Logged in', token, role: user.role });
     } else {
         res.status(401).json({ message: 'Invalid credentials' });
     }
