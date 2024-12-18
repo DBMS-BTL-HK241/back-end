@@ -22,9 +22,9 @@ const getMedicineByID = async (req, res) => {
 };
 
 const addMedicine = async (req, res) => {
-    const { MedicationID, Name, Dosage, Administration, SideEffects } = req.body;
+    const { name, dosage, administration, sideEffects, quantity } = req.body;
     try {
-        const newMedicine = await medicineModel.createMedicine(MedicationID, Name, Dosage, Administration, SideEffects);
+        const newMedicine = await medicineModel.createMedicine(name, dosage, administration, sideEffects, quantity);
         res.status(201).json({ message: 'Medicine successfully added', medicine: newMedicine });
     } catch (error) {
         res.status(500).json({ message: 'Error adding medicine', error });
@@ -32,8 +32,8 @@ const addMedicine = async (req, res) => {
 };
 
 const updateMedicine = async (req, res) => {
-    const { id } = req.params;
     const updates = req.body;
+    const id = updates.id;
     try {
         const updatedMedicine = await medicineModel.updateMedicine(parseInt(id), updates);
         if (!updatedMedicine) return res.status(404).json({ message: 'Medicine not found' });

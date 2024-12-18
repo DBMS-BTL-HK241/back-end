@@ -106,7 +106,7 @@ router.post('/', medicineController.addMedicine);
  *       200:
  *         description: Medicine successfully updated
  */
-router.put('/:id', medicineController.updateMedicine);
+router.put('/', medicineController.updateMedicine);
 
 /**
  * @swagger
