@@ -33,9 +33,8 @@ const addMedicine = async (req, res) => {
 
 const updateMedicine = async (req, res) => {
     const updates = req.body;
-    const id = updates.id;
     try {
-        const updatedMedicine = await medicineModel.updateMedicine(parseInt(id), updates);
+        const updatedMedicine = await medicineModel.updateMedicine(updates);
         if (!updatedMedicine) return res.status(404).json({ message: 'Medicine not found' });
         res.status(200).json({ message: 'Medicine successfully updated', medicine: updatedMedicine });
     } catch (error) {

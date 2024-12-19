@@ -43,15 +43,14 @@ const getMedicineByID = async (MedicationID) => {
 };
 
 // Cập nhật thông tin thuốc
-const updateMedicine = async (MedicationID, updates) => {
-    const { Name, Dosage, Administration, SideEffects , Quantity} = updates;
-    console.log('updates', updates);
+const updateMedicine = async (updates) => {
+    const {id, name, dosage, administration, sideEffects , quantity} = updates;
     const query = `
-        MATCH (m:Medicine) WHERE id(m) = $MedicationID
-        SET m += {Name: $Name, Dosage: $Dosage, Administration: $Administration, SideEffects: $SideEffects, Quantity: $Quantity}    
+        MATCH (m:Medicine) WHERE id(m) = $id
+        SET m += {Name: $name, Dosage: $dosage, Administration: $administration, SideEffects: $sideEffects, Quantity: $quantity}    
         RETURN m
     `;
-    const params = { MedicationID, Name, Dosage, Administration, SideEffects , Quantity};
+    const params = { id: parseInt(id), name, dosage, administration, sideEffects, quantity };
     const result = await runQuery(query, params);
     return result.records[0].get('m').properties;
 };
