@@ -35,8 +35,8 @@ const medicineController = require('../controllers/medicineController');
  *                     type: integer
  *                     example: 100
  */
-router.get('/', medicineController.getAll);
-
+router.get('/', medicineController.getAllMedicines);
+// router.get('/:id', medicineController.getByID)
 /**
  * @swagger
  * /medicine:
@@ -67,7 +67,7 @@ router.get('/', medicineController.getAll);
  *       201:
  *         description: Medicine successfully added
  */
-router.post('/', medicineController.add);
+router.post('/', medicineController.addMedicine);
 
 /**
  * @swagger
@@ -106,7 +106,7 @@ router.post('/', medicineController.add);
  *       200:
  *         description: Medicine successfully updated
  */
-router.put('/:id', medicineController.update);
+router.put('/:id', medicineController.updateMedicine);
 
 /**
  * @swagger
@@ -125,6 +125,6 @@ router.put('/:id', medicineController.update);
  *       200:
  *         description: Medicine successfully deleted
  */
-router.delete('/:id', medicineController.delete);
+router.delete('/:id', medicineController.deleteMedicine);
 
 module.exports = router;
