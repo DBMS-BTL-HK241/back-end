@@ -9,6 +9,7 @@ const {
 
 const router = express.Router();
 
+router.get("/", fetchAllPrescriptions);
 router.get("/:id", fetchPrescription);
 router.post("/", createPrescriptionHandler);
 router.get("/", fetchAllPrescriptions);

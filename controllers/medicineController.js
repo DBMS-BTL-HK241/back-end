@@ -22,17 +22,16 @@ const getMedicineByID = async (req, res) => {
 };
 
 const addMedicine = async (req, res) => {
-    const { MedicationID, Name, Dosage, Administration, SideEffects } = req.body;
+    const { name, dosage, administration, sideEffects, quantity, price} = req.body;
     try {
-        const newMedicine = await medicineModel.createMedicine(MedicationID, Name, Dosage, Administration, SideEffects);
-        res.status(201).json({ message: 'Medicine successfully added', medicine: newMedicine });
+        const newMedicine = await medicineModel.createMedicine( name, dosage, administration, sideEffects, quantity, price);
+        res.status(201).json(newMedicine);
     } catch (error) {
         res.status(500).json({ message: 'Error adding medicine', error });
     }
 };
 
 const updateMedicine = async (req, res) => {
-    const { id } = req.params;
     const updates = req.body;
     try {
         const updatedMedicine = await medicineModel.updateMedicine(updates);
@@ -45,7 +44,9 @@ const updateMedicine = async (req, res) => {
 
 const deleteMedicine = async (req, res) => {
     const { id } = req.params;
+    
     try {
+        console.log('deleteMedicine', id);
         const isDeleted = await medicineModel.deleteMedicine(parseInt(id));
         if (!isDeleted) return res.status(404).json({ message: 'Medicine not found' });
         res.status(200).json({ message: 'Medicine successfully deleted' });
