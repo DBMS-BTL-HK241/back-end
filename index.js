@@ -13,6 +13,7 @@ const doctorRoutes = require('./routes/doctors');
 const clinicRoutes = require('./routes/clinics');
 const paymentRoutes = require('./routes/payments');
 const medicineRoutes = require('./routes/medicine');
+const prescriptionRoutes = require('./routes/prescription');
 
 require('dotenv').config();
 
@@ -48,6 +49,8 @@ app.use('/api/appointments', appointmentsRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/clinics', clinicRoutes);
+app.use('/api/medicines', medicineRoutes);
+app.use('/api/prescriptions', prescriptionRoutes);
 
 
 app.use('/test1', authorize(['Patients']), (req, res) => res.json({ message: 'Test 1 for Patients', req: req.user }));
