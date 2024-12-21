@@ -12,6 +12,7 @@ const patientRoutes = require('./routes/patients');
 const doctorRoutes = require('./routes/doctors');
 const clinicRoutes = require('./routes/clinics');
 const paymentRoutes = require('./routes/payments');
+const revenueRoutes = require('./routes/revenue')
 require('dotenv').config();
 
 const app = express();
@@ -33,6 +34,7 @@ app.use(session({
 app.use(bodyParser.json());
 app.use('/auth', authRoutes);
 app.use('/payments', paymentRoutes);
+app.use('/revenue', revenueRoutes);
 
 // wagger UI /api-docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));

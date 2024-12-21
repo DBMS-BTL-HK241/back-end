@@ -34,7 +34,7 @@ const findAllInvoices = async () => {
 };
 
 // Function to update an invoice by ID
-const updateInvoice = async (id, updatedData) => {
+const findByIdAndUpdate = async (id, updatedData) => {
     const { patientName, phoneNumber, address, dateOfVisit, doctorName, specialization, symptoms, disease, medicines, amount, status } = updatedData;
     const result = await session.run(
         `MATCH (b:Bill {id: $id})
@@ -59,4 +59,30 @@ const updateInvoice = async (id, updatedData) => {
     return result.records[0].get('b').properties;
 };
 
-module.exports = { createBill, findAllInvoices };
+const getLastMonthRevenue = async () => {
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    const formattedDate = oneMonthAgo.toISOString().split("T")[0]; // YYYY-MM-DD format
+
+    const result = await session.run(
+        `MATCH (b:Bill)
+        WHERE b.dateOfVisit >= $formattedDate
+        RETURN b.dateOfVisit AS date, b.amount AS amount`,
+        { formattedDate }
+    );
+
+    return result.records.map(record => ({
+        date: record.get('date'),
+        amount: parseFloat(record.get('amount')),
+    }));
+};
+
+// Function to delete all bills
+const deleteAllBills = async () => {
+    const result = await session.run(
+        'MATCH (b:Bill) DETACH DELETE b'
+    );
+    return result.summary.counters.nodesDeleted; // Returns the number of deleted nodes
+};
+
+module.exports = { createBill, findAllInvoices, findByIdAndUpdate, getLastMonthRevenue, deleteAllBills };
