@@ -6,6 +6,17 @@ const driver = neo4j.driver(
     neo4j.auth.basic(process.env.NEO4J_USER || 'neo4j', process.env.NEO4J_PASSWORD || 'password')
 );
 
+async function checkConnectivity() {
+    try {
+        const serverInfo = await driver.getServerInfo();
+        console.log('Kết nối đến Neo4j thành công. Thông tin máy chủ:', serverInfo);
+    } catch (error) {
+        console.error('Không thể kết nối đến Neo4j:', error);
+        process.exit(1); // Thoát ứng dụng nếu kết nối thất bại
+    }
+}
+
+checkConnectivity();
 
 const runQuery = async (query, params = {}) => {
     const session = driver.session();
