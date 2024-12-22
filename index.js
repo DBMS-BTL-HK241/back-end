@@ -12,7 +12,7 @@ const patientRoutes = require('./routes/patients');
 const doctorRoutes = require('./routes/doctors');
 const clinicRoutes = require('./routes/clinics');
 const paymentRoutes = require('./routes/payments');
-const revenueRoutes = require('./routes/revenue')
+const revenueRoutes = require('./routes/revenue');
 require('dotenv').config();
 
 const app = express();

@@ -85,4 +85,19 @@ const deleteAllBills = async () => {
     return result.summary.counters.nodesDeleted; // Returns the number of deleted nodes
 };
 
-module.exports = { createBill, findAllInvoices, findByIdAndUpdate, getLastMonthRevenue, deleteAllBills };
+const markAsPaid = async (id) => {
+    const result = await session.run(
+        `MATCH (b:Bill {id: $id})
+        SET b.status = 'Paid'
+        RETURN b`,
+        { id }
+    );
+
+    if (result.records.length === 0) {
+        throw new Error('Invoice not found');
+    }
+
+    return result.records[0].get('b').properties;
+};
+
+module.exports = { createBill, findAllInvoices, findByIdAndUpdate, getLastMonthRevenue, deleteAllBills, markAsPaid };
